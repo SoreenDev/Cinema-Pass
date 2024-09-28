@@ -22,7 +22,6 @@ class CinemaSeeder extends Seeder
                 "city_id" => $city
             ])->each(
                 function($cinema) use ( $users) {
-                    Facilities::factory(rand(2,4))->create(['cinema_id' => $cinema->id]);
                     $cinema->comments()->create([
                         'body' => fake()->realText,
                         'user_id' => $users[array_rand($users)]
