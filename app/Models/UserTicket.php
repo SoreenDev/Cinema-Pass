@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cities extends Model
+class UserTicket extends Model
 {
-    use HasFactory;
+    protected $fillable = ['user_id', 'daily_screenings_id', 'status_payment'] ;
 }
