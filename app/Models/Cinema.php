@@ -15,20 +15,17 @@ class Cinema extends Model
     protected $fillable= [
         'name',
         'address',
-        'facilities_id',
         'location',
         'description',
         'phone',
-        'entry_fee'
+        'entry_fee',
+        'city_id'
     ] ;
 
-    public function facility() :BelongsTo
+
+    public function daily_screenings() :HasMany
     {
-        return $this->belongsTo(Facilities::class);
-    }
-    public function daily_screenings() :BelongsTo
-    {
-        return $this->belongsTo(DailyScreenings::class);
+        return $this->hasMany(DailyScreenings::class);
     }
 
     public function comments(): MorphMany
