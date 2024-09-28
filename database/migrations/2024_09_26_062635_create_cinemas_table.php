@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->foreignIdFor(Facilities::class)->nullable();
             $table->foreignIdFor(City::class);
             $table->string('location')->nullable();
             $table->text('description');
