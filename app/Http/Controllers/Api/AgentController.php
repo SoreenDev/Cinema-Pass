@@ -6,14 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Agent\StoreRequest;
 use App\Http\Requests\Agent\UpdateRequest;
 use App\Http\Resources\AgentResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\Agent;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AgentController extends Controller
 {
-    use BasicApiResponseTrait;
     /**
      * Display a listing of the resource.
      */

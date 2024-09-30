@@ -6,14 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cinema\StoreReaquest;
 use App\Http\Requests\Cinema\UpdateReaquest;
 use App\Http\Resources\CinemaResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\Cinema;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CinemaController extends Controller
 {
-    use BasicApiResponseTrait;
     /**
      * Display a listing of the resource.
      */

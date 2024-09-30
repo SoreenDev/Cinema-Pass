@@ -6,14 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Performance\StoreRequest;
 use App\Http\Requests\Performance\UpdateRequest;
 use App\Http\Resources\PerformanceResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\Performance;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PerformanceController extends Controller
 {
-    use BasicApiResponseTrait;
     /**
      * Display a listing of the resource.
      */

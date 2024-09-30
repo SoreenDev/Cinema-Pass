@@ -6,16 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DailyScreening\StoreRequest;
 use App\Http\Requests\DailyScreening\UpdateRequest;
 use App\Http\Resources\DailyScreeningResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\Cinema;
 use App\Models\DailyScreenings;
 use App\Models\Performance;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DailyScreeningController extends Controller
 {
-    use BasicApiResponseTrait;
     /**
      * Display a listing of the resource.
      */

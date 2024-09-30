@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AgentController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CinemaController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\DailyScreeningController;
 use App\Http\Controllers\Api\PerformanceController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PerformanceAgentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

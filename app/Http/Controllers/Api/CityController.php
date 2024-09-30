@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\City\StoreRequest;
 use App\Http\Requests\City\UpdateRequest;
 use App\Http\Resources\CityResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\City;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CityController extends Controller
 {
-    use BasicApiResponseTrait;
     /**
      * Display a listing of the resource.
      */

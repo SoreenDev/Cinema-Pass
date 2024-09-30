@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
-use App\Http\Trait\BasicApiResponseTrait;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CategoryController extends Controller
 {
-    use BasicApiResponseTrait;
-
     /**
      * Display a listing of the resource.
      */
