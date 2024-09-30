@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AgentController;
 use App\Http\Controllers\Api\CinemaController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\DailyScreeningController;
@@ -15,3 +16,4 @@ Route::apiResource('/cities', CityController::class );
 Route::apiResource('/cinemas', CinemaController::class );
 Route::apiResource('/performances', PerformanceController::class );
 Route::apiResource('/daily_screenings', DailyScreeningController::class );
+Route::apiResource('/agents', AgentController::class );
