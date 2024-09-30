@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(Agent::class);
             $table->string('activity')->default(ActivityEnum::Actor);
             $table->boolean('exception')->default(false);
+
+            $table->unique(["performance_id", "agent_id", "activity"]);
             $table->timestamps();
         });
     }
