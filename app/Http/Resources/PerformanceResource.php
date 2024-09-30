@@ -23,22 +23,23 @@ class PerformanceResource extends JsonResource
             'description' => $this->resource->description,
             'price' => $this->resource->price,
             'production_date' => $this->resource->production_date,
-            'performance_agent' => $this->whenLoaded(
-                'performance_agent',
-                fn () => $this->resource->performance_agent
-            ),
-            'daily_screenings' => $this->whenLoaded(
-                'daily_screenings',
-                fn () => $this->resource->daily_screenings
+            'dailyScreenings' => $this->whenLoaded(
+                'dailyScreenings',
+                fn () => $this->resource->dailyScreenings
             ),
             'comments' => $this->whenLoaded(
                 'comments',
-                fn () => $this->resource->comments
+                fn () => CommentResource::collection($this->resource->comments)
             ),
             'scores' => $this->whenLoaded(
                 'scores',
-                fn () => $this->resource->scores
+                fn () => ScoreResource::collection($this->resource->scores)
             ),
+            'agents' => $this->whenLoaded(
+                'agents',
+                fn () => AgentResource::collection($this->resource->agents)
+            ),
+
         ];
     }
 }

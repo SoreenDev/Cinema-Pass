@@ -17,7 +17,7 @@ class PerformanceController extends Controller
     public function index()
     {
         $performances = QueryBuilder::for(Performance::class)
-            ->allowedIncludes(['comments','scores','daily_screenings','performance_agent'])
+            ->allowedIncludes(['comments','scores','dailyScreenings','agents'])
             ->get();
 
         return $this->successResponseWithAdditional(
@@ -34,7 +34,7 @@ class PerformanceController extends Controller
         $performance = Performance::create($request->validated());
 
         return $this->successResponse(
-            PerformanceResource::make($performance->load(['comments','scores','daily_screenings','performance_agent'])),
+            PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
             'Successfully Created Performance'
         );
     }
@@ -45,7 +45,7 @@ class PerformanceController extends Controller
     public function show(Performance $performance)
     {
         return $this->successResponse(
-            PerformanceResource::make($performance->load(['comments','scores','daily_screenings','performance_agent'])),
+            PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
             'Successfully find performance'
         );
     }
@@ -57,7 +57,7 @@ class PerformanceController extends Controller
     {
         $performance->update($request->validated());
         return $this->successResponse(
-            PerformanceResource::make($performance->load(['comments','scores','daily_screenings','performance_agent'])),
+            PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
             'Successfully Updated Performance'
         );
     }
