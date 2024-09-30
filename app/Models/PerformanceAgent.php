@@ -16,4 +16,9 @@ class PerformanceAgent extends Model
     {
         return $this->belongsTo(Performance::class);
     }
+    public function agent() :BelongsTo
+    {
+        return $this->belongsTo(Agent::class);
+    }
+
 }
