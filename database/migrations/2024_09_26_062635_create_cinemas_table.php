@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\City;
-use App\Models\Facilities;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
