@@ -17,8 +17,8 @@ return new class extends Migration
         Schema::create('daily_screenings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(City::class);
-            $table->foreignIdFor(Cinema::class);
-            $table->foreignIdFor(Performance::class);
+            $table->foreignIdFor(Cinema::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Performance::class)->constrained()->cascadeOnDelete();
             $table->datetime('start_time');
             $table->unsignedInteger('final_ticket_cost');
             $table->timestamps();

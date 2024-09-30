@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('user_tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(DailyScreenings::class);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(DailyScreenings::class)->constrained()->cascadeOnDelete();
             $table->string('status_payment')->default('ok');
             $table->timestamps();
         });

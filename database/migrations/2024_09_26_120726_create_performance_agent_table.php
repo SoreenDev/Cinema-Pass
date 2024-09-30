@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('performance_agents', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Performance::class);
+            $table->foreignIdFor(Performance::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Agent::class);
             $table->string('activity')->default(ActivityEnum::Actor);
             $table->boolean('exception')->default(false);
