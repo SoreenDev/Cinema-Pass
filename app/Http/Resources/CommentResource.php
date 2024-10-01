@@ -36,7 +36,15 @@ class CommentResource extends JsonResource
                     if ($this->resource->commentable instanceof Comment)
                         return CommentResource::make($this->resource->commentable);
                 }
-            )
+            ),
+            'score_count' => $this->whenLoaded(
+                'scores',
+                fn () => $this->resource->scores()->count(),
+            ),
+            'scores' => $this->whenLoaded(
+                'scores',
+                fn () => ScoreResource::collection($this->resource->scores)
+            ),
         ];
     }
 }

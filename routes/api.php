@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DailyScreeningController;
 use App\Http\Controllers\Api\PerformanceController;
+use App\Http\Controllers\ScoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::controller(CinemaController::class)->prefix('cinemas')->group(function ()
     Route::get('/{cinema}','show');
     Route::put('/{cinema}','update');
     Route::post('/{cinema}/comment','comment');
+    Route::post('/{cinema}/giving_score','givingScore');
     Route::delete('/{cinema}','destroy');
 });
 
@@ -39,6 +41,7 @@ Route::controller(PerformanceController::class)->prefix('performances')->group(f
     Route::get('/{performance}','show');
     Route::put('/{performance}','update');
     Route::post('/{performance}/comment','comment');
+    Route::post('/{performance}/giving_score','givingScore');
     Route::delete('/{performance}','destroy');
 });
 
@@ -69,5 +72,12 @@ Route::controller(CategoryController::class)->prefix('categories')->group(functi
 Route::controller(CommentController::class)->prefix('comments')->group(function () {
     Route::get('/','index');
     Route::get('/{comment}','show');
+    Route::post('/{comment}/giving_score','givingScore');
     Route::delete('/{comment}','destroy');
+});
+
+Route::controller(ScoreController::class)->prefix('scores')->group(function () {
+    Route::get('/','index');
+    Route::get('/{score}','show');
+    Route::delete('/{score}','destroy');
 });

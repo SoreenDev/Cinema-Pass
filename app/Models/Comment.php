@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Trait\HasComment;
+use App\Trait\HasScore;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
-    use HasFactory, HasComment;
+    use HasFactory, HasScore;
 
     protected $fillable = ['body','user_id'];
 

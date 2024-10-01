@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use App\Trait\HasComment;
+use App\Trait\HasScore;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Cinema extends Model
 {
-    use HasFactory;
-    use HasComment;
+    use HasFactory, HasComment ,HasScore;
 
     protected $fillable= [
         'name',
@@ -29,9 +28,6 @@ class Cinema extends Model
         return $this->hasMany(DailyScreenings::class);
     }
 
-    public function scores(): MorphMany
-    {
-        return $this->morphMany(Score::class, 'score_able');
-    }
+
 
 }

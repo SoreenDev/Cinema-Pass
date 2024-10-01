@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cinema\StoreRequest;
 use App\Http\Requests\Comment\StoreRequest as CommentStoreRequest;
 use App\Http\Requests\Cinema\UpdateReaquest;
+use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\CinemaResource;
 use App\Models\Cinema;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CinemaController extends Controller
@@ -52,19 +52,6 @@ class CinemaController extends Controller
         );
     }
 
-    public function comment(Cinema $cinema, CommentStoreRequest $request)
-    {
-        $cinema->comments()->create([
-            'body' => $request->body,
-            'user_id' => auth()->id(),
-        ]);
-
-        return $this->successResponse(
-            CinemaResource::make($cinema->load(['comments','scores'])),
-            'Successfully created comment'
-        );
-    }
-
     /**
      * Update the specified resource in storage.
      */
@@ -88,4 +75,31 @@ class CinemaController extends Controller
 
         return $this->successResponse(message:'Successfully deleted cinema');
     }
+
+    public function comment(Cinema $cinema, CommentStoreRequest $request)
+    {
+        $cinema->comments()->create([
+            'body' => $request->body,
+            'user_id' => auth()->id(),
+        ]);
+
+        return $this->successResponse(
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            'Successfully created comment'
+        );
+    }
+
+    public function givingScore(Cinema $cinema, ScoreStoreRequest $request)
+    {
+        $cinema->scores()->create([
+            'point' => $request->point,
+            'user_id' => auth()->id(),
+        ]);
+
+        return $this->successResponse(
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            'Successfully Giving score'
+        );
+    }
+
 }

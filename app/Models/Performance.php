@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Trait\HasComment;
+use App\Trait\HasScore;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,8 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Performance extends Model
 {
-    use HasFactory;
-    use HasComment;
+    use HasFactory, HasScore, HasComment;
 
     protected $fillable = ['name', 'duration', 'age_group', 'description', 'price', 'production_data','category_id'];
 

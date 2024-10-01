@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CommentController extends Controller
@@ -16,7 +15,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = QueryBuilder::for(Comment::class)
-            ->allowedIncludes('commentable','user')
+            ->allowedIncludes('commentable','user','scores')
             ->get();
         return $this->successResponseWithAdditional(
             CommentResource::collection($comments),
@@ -30,7 +29,7 @@ class CommentController extends Controller
     public function show(Comment $comment)
     {
         return $this->successResponse(
-            CommentResource::make($comment->load('commentable','user')),
+            CommentResource::make($comment->load('commentable','user','scores')),
             'Successfully find Comment'
         );
     }
@@ -42,5 +41,17 @@ class CommentController extends Controller
     {
         $comment->delete();
         return $this->successResponse(message: "Successfully delete comment");
+    }
+
+    public function givingScore(Comment $comment,)
+    {
+        $comment->scores()->create([
+            'user_id' => auth()->id() ?? 1,
+        ]);
+
+        return $this->successResponse(
+            CommentResource::make($comment->load(['commentable','user','scores'])),
+            'Successfully Giving score'
+        );
     }
 }
