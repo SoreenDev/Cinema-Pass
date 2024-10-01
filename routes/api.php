@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DailyScreeningController;
 use App\Http\Controllers\Api\PerformanceController;
 use App\Http\Controllers\Api\ScoreController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,13 @@ Route::controller(CommentController::class)->prefix('comments')->group(function 
     Route::get('/{comment}','show');
     Route::post('/{comment}/giving_score','givingScore');
     Route::delete('/{comment}','destroy');
+});
+
+Route::controller(UserController::class)->prefix('users')->group(function () {
+    Route::get('/','index');
+    Route::get('/{user}','show');
+    Route::put('/{user}','update');
+    Route::delete('/{user}','destroy');
 });
 
 Route::controller(ScoreController::class)->prefix('scores')->group(function () {
