@@ -13,7 +13,7 @@ class Comment extends Model
 {
     use HasFactory, HasComment;
 
-    protected $fillable = ['commentable_id', 'commentable_type', 'body'];
+    protected $fillable = ['body','user_id'];
 
     public function scores() :MorphMany
     {

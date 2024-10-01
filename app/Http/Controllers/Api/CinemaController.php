@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cinema\StoreReaquest;
+use App\Http\Requests\Cinema\StoreRequest;
+use App\Http\Requests\Comment\StoreRequest as CommentStoreRequest;
 use App\Http\Requests\Cinema\UpdateReaquest;
 use App\Http\Resources\CinemaResource;
 use App\Models\Cinema;
@@ -30,7 +31,7 @@ class CinemaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreReaquest $request)
+    public function store(StoreRequest $request)
     {
         $cinema = Cinema::create($request->validated());
 
@@ -48,6 +49,19 @@ class CinemaController extends Controller
         return $this->successResponse(
             CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
             'Successfully find cinema'
+        );
+    }
+
+    public function comment(Cinema $cinema, CommentStoreRequest $request)
+    {
+        $cinema->comments()->create([
+            'body' => $request->body,
+            'user_id' => auth()->id(),
+        ]);
+
+        return $this->successResponse(
+            CinemaResource::make($cinema->load(['comments','scores'])),
+            'Successfully created comment'
         );
     }
 

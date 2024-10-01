@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\StoreRequest as CommentStoreRequest;
 use App\Http\Requests\Performance\StoreRequest;
 use App\Http\Requests\Performance\UpdateRequest;
+use App\Http\Resources\CinemaResource;
 use App\Http\Resources\PerformanceResource;
 use App\Models\Performance;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -42,6 +44,18 @@ class PerformanceController extends Controller
         return $this->successResponse(
             PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
             'Successfully Created Performance'
+        );
+    }
+    public function comment(Performance $performance, CommentStoreRequest $request)
+    {
+        $performance->comments()->create([
+            ...$request->validated(),
+            'user_id' => auth()->id(),
+        ]);
+
+        return $this->successResponse(
+            CinemaResource::make($performance->load(['comments','scores'])),
+            'Successfully created comment'
         );
     }
 
