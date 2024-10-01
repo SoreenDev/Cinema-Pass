@@ -12,7 +12,6 @@ class DatabaseSeeder extends Seeder
         CinemaSeeder::class,
         PerformanceSeeder::class,
         AgentSeeder::class,
-        PerformanceAgentSeeder::class,
         DailyScreeningSeeder::class,
         UserTicketSeeder::class
     ];
