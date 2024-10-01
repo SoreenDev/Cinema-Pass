@@ -32,6 +32,12 @@ class PerformanceController extends Controller
     public function store(StoreRequest $request)
     {
         $performance = Performance::create($request->validated());
+        foreach ($request->agents as $agent) {
+            $performance->agents()->attach($agent['id'], [
+                "activity" => $agent["activity"],
+                "exception" => $agent["exception"],
+            ]);
+        }
 
         return $this->successResponse(
             PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
@@ -56,6 +62,14 @@ class PerformanceController extends Controller
     public function update(UpdateRequest $request, Performance $performance)
     {
         $performance->update($request->validated());
+        if ($request->filled('agents')) {
+            foreach ($request->agents as $agent) {
+                $performance->agents()->sync($agent['id'], [
+                    "activity" => $agent["activity"],
+                    "exception" => $agent["exception"],
+                ]);
+            }
+        }
         return $this->successResponse(
             PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
             'Successfully Updated Performance'

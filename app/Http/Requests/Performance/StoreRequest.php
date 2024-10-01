@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Performance;
 
+use App\Enums\ActivityEnum;
 use App\Enums\AgeGroupEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -29,6 +30,10 @@ class StoreRequest extends FormRequest
             'description' => ['required','string'],
             'price' => ['required', 'numeric', 'min:50'],
             'production_data' => ['nullable', 'date'.'date_format:Y-m-d'],
+            'agents' => ['required', 'array'],
+            'agents.*.id' => ['required', 'integer', 'exists:agents,id'],
+            'agents.*.exception' => ['bool'],
+            'agents.*.activity' => ['required','string',Rule::enum(ActivityEnum::class)],
         ];
     }
 }
