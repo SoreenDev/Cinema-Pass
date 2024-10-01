@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\DailyScreeningController;
 use App\Http\Controllers\Api\PerformanceController;
 use App\Http\Controllers\Api\ScoreController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserTicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -88,4 +89,13 @@ Route::controller(ScoreController::class)->prefix('scores')->group(function () {
     Route::get('/','index');
     Route::get('/{score}','show');
     Route::delete('/{score}','destroy');
+});
+
+Route::controller(UserTicketController::class)->prefix('my_tickets')->group(function () {
+    Route::get('/','index');
+    Route::post('/','store');
+    Route::get('/{userTicket}','show');
+    Route::put('/{userTicket}','update');
+    Route::put('/{userTicket}/paid','ticketPaid');
+    Route::delete('/{userTicket}','destroy');
 });

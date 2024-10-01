@@ -9,6 +9,7 @@ use App\Http\Requests\Performance\UpdateRequest;
 use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\PerformanceResource;
 use App\Models\Performance;
+use App\Models\UserTicket;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PerformanceController extends Controller
@@ -100,7 +101,9 @@ class PerformanceController extends Controller
     }
     public function givingScore(Performance $performance, ScoreStoreRequest $request)
     {
-        // todo : adding check ticket
+        if (! UserTicket::where('user_id', auth()->id())->where('performance_id', $performance->id)->exists())
+            $this->errorResponse('You do not have the necessary conditions to register the score!');
+
         $performance->scores()->create([
             'point' => $request->point,
             'user_id' => auth()->id()??1,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\DailyScreenings;
+use App\Models\Performance;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,8 +17,10 @@ return new class extends Migration
         Schema::create('user_tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(DailyScreenings::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(DailyScreenings::class);
+            $table->foreignIdFor(Performance::class)->nullable();
             $table->string('status_payment')->default('ok');
+            $table->unsignedTinyInteger('price');
             $table->timestamps();
         });
     }
