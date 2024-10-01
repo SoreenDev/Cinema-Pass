@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Score\StoreRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ScoreResource;
 use App\Models\Score;
 use Spatie\QueryBuilder\QueryBuilder;

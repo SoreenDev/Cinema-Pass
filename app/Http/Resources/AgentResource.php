@@ -22,7 +22,7 @@ class AgentResource extends JsonResource
             'activity' => $this->resource->activity,
             'performances' => $this->whenLoaded(
                 'performances',
-                fn() => $this->resource->performances
+                fn() => PerformanceResource::collection($this->resource->performances)
             ),
         ];
     }

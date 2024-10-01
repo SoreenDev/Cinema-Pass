@@ -25,15 +25,15 @@ class CinemaResource extends JsonResource
             'entry_fee' => $this->resource->entry_fee,
             'daily_screenings' => $this->whenLoaded(
               'daily_screenings',
-              fn () => $this->resource->daily_screenings
+              fn () => DailyScreeningResource::collection($this->resource->daily_screenings)
             ),
             'comments' => $this->whenLoaded(
                 'comments',
-                fn () => $this->resource->comments
+                fn () => CommentResource::collection($this->resource->comments)
             ),
             'scores' => $this->whenLoaded(
               'scores',
-                fn () => $this->resource->scores
+                fn () => ScoreResource::collection($this->resource->scores)
             ),
 
 

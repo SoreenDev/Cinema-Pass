@@ -25,7 +25,7 @@ class PerformanceResource extends JsonResource
             'production_date' => $this->resource->production_date,
             'dailyScreenings' => $this->whenLoaded(
                 'dailyScreenings',
-                fn () => $this->resource->dailyScreenings
+                fn () => DailyScreeningResource::collection($this->resource->dailyScreenings)
             ),
             'comments' => $this->whenLoaded(
                 'comments',

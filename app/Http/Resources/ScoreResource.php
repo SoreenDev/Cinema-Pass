@@ -19,7 +19,11 @@ class ScoreResource extends JsonResource
     {
         return [
           'id' => $this->resource->id,
-          'user_id' => $this->resource->user_id,
+          'user' => $this->whenLoaded(
+              'user',
+              fn() => UserResource::make($this->resource->user),
+              $this->resource->user_id
+          ),
           'point' => $this->resource->point ?? '',
           'resource'=> $this->whenLoaded(
                 'score_able',

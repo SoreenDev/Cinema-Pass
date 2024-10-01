@@ -22,7 +22,7 @@ class CommentResource extends JsonResource
             'body' => $this->resource->body,
             'user' => $this->whenLoaded(
                 'user',
-                fn() => $this->resource->user,
+                fn() => UserResource::make($this->resource->user),
                 $this->resource->user_id
             ),
             'resource'=> $this->whenLoaded(

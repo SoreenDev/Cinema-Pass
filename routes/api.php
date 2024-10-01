@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DailyScreeningController;
 use App\Http\Controllers\Api\PerformanceController;
-use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\Api\ScoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
