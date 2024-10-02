@@ -20,7 +20,7 @@ class UserTicketSeeder extends Seeder
          for ($i = 0; $i < 200; $i++) {
              $daily_screen= $daily_screens->random();
              UserTicket::create([
-                 'user_id' => $users->random()->pop(),
+                 'user_id' => $users->random(),
                  'daily_screenings_id' => $daily_screen->id,
                  'performance_id' => $daily_screen->performance_id,
                  'price' => '0'

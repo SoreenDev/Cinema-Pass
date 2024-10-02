@@ -16,6 +16,6 @@ class UserSeeder extends Seeder
     {
         $cities = City::all()->pluck('id');
         foreach ($cities as $city)
-            User::factory(5)->create(["city_id" => $city->id]);
+            User::factory(5)->create(["city_id" => $city]);
     }
 }
