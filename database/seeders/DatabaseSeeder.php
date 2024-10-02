@@ -10,10 +10,10 @@ class DatabaseSeeder extends Seeder
         CitySeeder::class,
         UserSeeder::class,
         CinemaSeeder::class,
-        PerformanceSeeder::class,
         AgentSeeder::class,
+        PerformanceSeeder::class,
         DailyScreeningSeeder::class,
-        UserTicketSeeder::class
+        UserTicketSeeder::class,
     ];
 
     /**

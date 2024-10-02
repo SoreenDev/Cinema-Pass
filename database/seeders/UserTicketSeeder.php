@@ -15,12 +15,16 @@ class UserTicketSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::pluck('id')->toArray();
-        $daily_screens = DailyScreenings::pluck('id')->toArray();
-         for ($i = 0; $i < count($daily_screens); $i++)
+        $users = User::all()->pluck('id');
+        $daily_screens = DailyScreenings::all();
+         for ($i = 0; $i < 200; $i++) {
+             $daily_screen= $daily_screens->random();
              UserTicket::create([
-                 'user_id' => $users[array_rand($users)],
-                 'daily_screenings_id' => $daily_screens[array_rand($daily_screens)],
+                 'user_id' => $users->random()->pop(),
+                 'daily_screenings_id' => $daily_screen->id,
+                 'performance_id' => $daily_screen->performance_id,
+                 'price' => '0'
              ]);
+         }
     }
 }

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Cinema;
 use App\Models\City;
-use App\Models\Facilities;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
