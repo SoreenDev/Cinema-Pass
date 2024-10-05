@@ -37,7 +37,9 @@ class CinemaController extends Controller
         $cinema = Cinema::create($request->validated());
 
         if ($request->image)
-            $cinema->addMediaFromRequest('image')->toMediaCollection('image');
+            $cinema->addMediaFromRequest('image')
+                ->setFileName($cinema->name)
+                ->toMediaCollection('image');
 
         return $this->successResponseWithAdditional(
             CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
@@ -65,8 +67,9 @@ class CinemaController extends Controller
 
         if ($request->image) {
             $cinema->clearMediaCollection('image');
-            $cinema->addMediaFromRequest('image')->toMediaCollection('image');
-        }
+            $cinema->addMediaFromRequest('image')
+                ->setFileName($cinema->name)
+                ->toMediaCollection('image');        }
         return $this->successResponse(
             CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully updated cinema'
