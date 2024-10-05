@@ -20,6 +20,7 @@ class UserTicketController extends Controller
     public function index()
     {
         $userTickets = QueryBuilder::for(UserTicket::class)
+            ->allowedIncludes(['user','daily_screening','performance'])
             ->get();
 
         return $this->successResponseWithAdditional(
@@ -43,7 +44,7 @@ class UserTicketController extends Controller
             'status_payment' => StatusPaymentEnum::Waiting->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket),
+            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
             'Created Ticket'
         );
     }
@@ -54,7 +55,7 @@ class UserTicketController extends Controller
     public function show(UserTicket $userTicket)
     {
         return $this->successResponse(
-            UserTicketResource::make($userTicket),
+            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
             'Successfully find'
         );
     }
@@ -75,7 +76,7 @@ class UserTicketController extends Controller
             'status_payment' => StatusPaymentEnum::Waiting->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket),
+            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
             'Created Ticket'
         );
     }
@@ -94,7 +95,7 @@ class UserTicketController extends Controller
             'status_payment' => StatusPaymentEnum::Paid->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket),
+            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
             'Successfully paid ticket'
         );
     }

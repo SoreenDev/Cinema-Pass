@@ -19,6 +19,7 @@ class DailyScreeningController extends Controller
     public function index()
     {
         $daily_screenings =  QueryBuilder::for(DailyScreenings::class)
+            ->allowedIncludes(['cinema', 'performance','city'])
             ->get();
 
         return $this->successResponseWithAdditional(
@@ -44,11 +45,9 @@ class DailyScreeningController extends Controller
             return $this->errorResponse('DailyScreening already exists');
         }
 
-
-        $cinemas = Cinema::find($request->cinema_id)->first();
-        $performance = Performance::find($request->performance_id)->first();
+        $cinemas = Cinema::find($request->cinema_id);
+        $performance = Performance::find($request->performance_id);
         $final_ticket_cost = $performance->price + $cinemas->entry_fee;
-
         $daily_screening = DailyScreenings::create([
             ...$request->validated(),
             'city_id' => $cinemas->city_id,
@@ -56,7 +55,7 @@ class DailyScreeningController extends Controller
             'final_ticket_cost' => $final_ticket_cost,
         ]);
         return $this->successResponse(
-            DailyScreeningResource::make($daily_screening),
+            DailyScreeningResource::make($daily_screening->load(['cinema', 'performance','city'])),
             'Successfully Created Daily Screening'
         );
 
@@ -68,7 +67,7 @@ class DailyScreeningController extends Controller
     public function show(DailyScreenings $daily_screening)
     {
         return $this->successResponse(
-            DailyScreeningResource::make($daily_screening),
+            DailyScreeningResource::make($daily_screening->load(['cinema', 'performance','city'])),
             'Successfully find daily screening'
         );
     }
@@ -93,8 +92,8 @@ class DailyScreeningController extends Controller
         }
 
 
-        $cinemas = Cinema::find($request->cinema_id)->first();
-        $performance = Performance::find($request->performance_id)->first();
+        $cinemas = Cinema::find($request->cinema_id);
+        $performance = Performance::find($request->performance_id);
         $final_ticket_cost = $performance->price + $cinemas->entry_fee;
 
         $daily_screening->update([
@@ -104,7 +103,7 @@ class DailyScreeningController extends Controller
             'final_ticket_cost' => $final_ticket_cost,
         ]);
         return $this->successResponse(
-            DailyScreeningResource::make($daily_screening),
+            DailyScreeningResource::make($daily_screening->load(['cinema', 'performance','city'])),
             'Successfully Update Daily Screening'
         );
 
