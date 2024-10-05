@@ -33,5 +33,7 @@ class Performance extends Model
     public function agents(): BelongsToMany
     {
         return $this->belongsToMany(Agent::class, "performance_agents");
+        return $this->belongsToMany(Agent::class, "performance_agents")
+            ->withPivot(["activity", "exception"]);
     }
 }

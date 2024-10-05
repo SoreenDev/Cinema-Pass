@@ -24,6 +24,16 @@ class AgentResource extends JsonResource
                 'performances',
                 fn() => PerformanceResource::collection($this->resource->performances)
             ),
+            "performance_activity" => $this->whenLoaded(
+                'pivot',
+                fn() => $this->resource->pivot->activity
+            ),
+            "performance_exception" => $this->whenLoaded(
+                'pivot',
+                fn() => $this->resource->pivot->exception
+            ),
+
+
         ];
     }
 }
