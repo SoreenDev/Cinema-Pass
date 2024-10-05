@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionEnum;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +18,7 @@ class DatabaseSeeder extends Seeder
         PerformanceSeeder::class,
         DailyScreeningSeeder::class,
         UserTicketSeeder::class,
+        PermissionSeeder::class,
     ];
 
     /**
@@ -23,6 +26,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $role = Role::findOrCreate('Admin');
         $this->call($this->seedersCall);
         User::create([
             'first_name' => 'Admin',
@@ -32,6 +36,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'soreendev@gmail.com',
             'password' => '123456789'
 
-        ]);
+        ])->assignRole($role);
     }
 }
