@@ -32,6 +32,7 @@ class UpdateRequest extends FormRequest
             'agents.*.id' => ['required','integer', 'exists:agents,id'],
             'agents.*.exception' => ['required','bool'],
             'agents.*.activity' => ['required','string', Rule::enum(ActivityEnum::class)],
+            'image' => ['file', 'mimes:jpeg,jpg,png'],
         ];
     }
 }

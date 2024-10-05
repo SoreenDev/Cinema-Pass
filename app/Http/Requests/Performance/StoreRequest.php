@@ -34,6 +34,7 @@ class StoreRequest extends FormRequest
             'agents.*.id' => ['required', 'integer', 'exists:agents,id'],
             'agents.*.exception' => ['bool'],
             'agents.*.activity' => ['required','string',Rule::enum(ActivityEnum::class)],
+            'image' => ['file','mimes:jpg,jpeg,png'],
         ];
     }
 }

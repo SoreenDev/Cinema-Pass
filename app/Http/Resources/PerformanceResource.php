@@ -15,9 +15,13 @@ class PerformanceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->resource->name,
             'id' => $this->resource->id,
-            'category_id' => $this->resource->category_id,
+            'name' => $this->resource->name,
+            'category' => $this->whenLoaded(
+                'category',
+                fn() => CategoryResource::make($this->resource->category),
+                $this->resource->category_id
+            ),
             'duration' => $this->resource->duration,
             'age_group' => $this->resource->age_group,
             'description' => $this->resource->description,
@@ -39,6 +43,10 @@ class PerformanceResource extends JsonResource
                 'agents',
                 fn () => AgentResource::collection($this->resource->agents)
             ),
+            'image' => $this->when(
+                $this->resource->getFirstMediaUrl('image'),
+                $this->resource->getFirstMediaUrl('image')
+            )
 
         ];
     }

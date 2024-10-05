@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Performance extends Model
+class Performance extends Model implements HasMedia
 {
-    use HasFactory, HasScore, HasComment;
+    use HasFactory, HasScore, HasComment, InteractsWithMedia;
 
     protected $fillable = ['name', 'duration', 'age_group', 'description', 'price', 'production_data','category_id'];
 

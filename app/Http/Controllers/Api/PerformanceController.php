@@ -20,7 +20,7 @@ class PerformanceController extends Controller
     public function index()
     {
         $performances = QueryBuilder::for(Performance::class)
-            ->allowedIncludes(['comments','scores','dailyScreenings','agents'])
+            ->allowedIncludes(['comments','scores','dailyScreenings','agents.performances'])
             ->get();
 
         return $this->successResponseWithAdditional(
@@ -35,12 +35,18 @@ class PerformanceController extends Controller
     public function store(StoreRequest $request)
     {
         $performance = Performance::create($request->validated());
+
         foreach ($request->agents as $agent) {
             $performance->agents()->attach($agent['id'], [
                 "activity" => $agent["activity"],
                 "exception" => $agent["exception"],
             ]);
         }
+
+        if ($request->image)
+            $performance->addMediaFromRequest('image')
+                ->setFileName($performance->name)
+                ->toMediaCollection('image');
 
         return $this->successResponse(
             PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
@@ -72,6 +78,12 @@ class PerformanceController extends Controller
                     "exception" => $agent["exception"],
                 ]);
             }
+        }
+        if ($request->image) {
+            $performance->clearMediaCollection('image');
+            $performance->addMediaFromRequest('image')
+                ->setFileName($performance->name)
+                ->toMediaCollection('image');
         }
         return $this->successResponse(
             PerformanceResource::make($performance->load(['comments','scores','dailyScreenings','agents'])),
