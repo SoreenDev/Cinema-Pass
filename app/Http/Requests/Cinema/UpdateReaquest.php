@@ -22,6 +22,7 @@ class UpdateReaquest extends FormRequest
             'description' => ['sometimes','string','max:255'],
             'phone' => ['sometimes','string','digits:9','unique:cinemas,phone'],
             'entry_fee' => ['required', 'numeric','min:50'],
+            'image' => ['file','mimes:jpg,png,jpeg'],
         ];
     }
 }

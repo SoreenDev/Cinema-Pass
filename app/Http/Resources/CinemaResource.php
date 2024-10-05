@@ -18,7 +18,11 @@ class CinemaResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'address' => $this->resource->address,
-            'city_id' => $this->resource->city_id,
+                'city_id' => $this->whenLoaded(
+                    'city',
+                    fn()=> CityResource::make($this->resource->city),
+                    $this->resource->city_id
+                ),
             'location' => $this->resource->location,
             'description' => $this->resource->description,
             'phone' => $this->resource->phone,
@@ -35,6 +39,11 @@ class CinemaResource extends JsonResource
               'scores',
                 fn () => ScoreResource::collection($this->resource->scores)
             ),
+            'image' => $this->when(
+                $this->resource->getFirstMediaUrl('image'),
+                $this->resource->getFirstMediaUrl('image')
+            )
+
 
 
         ];

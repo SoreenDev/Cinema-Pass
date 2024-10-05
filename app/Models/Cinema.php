@@ -6,11 +6,14 @@ use App\Trait\HasComment;
 use App\Trait\HasScore;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Cinema extends Model
+class Cinema extends Model implements HasMedia
 {
-    use HasFactory, HasComment ,HasScore;
+    use HasFactory, HasComment, HasScore , InteractsWithMedia;
 
     protected $fillable= [
         'name',
@@ -28,6 +31,9 @@ class Cinema extends Model
         return $this->hasMany(DailyScreenings::class);
     }
 
-
+    public function city() :BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
 
 }

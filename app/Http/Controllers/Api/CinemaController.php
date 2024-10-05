@@ -20,7 +20,7 @@ class CinemaController extends Controller
     public function index()
     {
         $cinemas = QueryBuilder::for(Cinema::class)
-            ->allowedIncludes(['comments','scores','daily_screenings'])
+            ->allowedIncludes(['comments','scores','daily_screenings','city'])
             ->get();
 
         return $this->successResponseWithAdditional(
@@ -36,8 +36,11 @@ class CinemaController extends Controller
     {
         $cinema = Cinema::create($request->validated());
 
+        if ($request->image)
+            $cinema->addMediaFromRequest('image')->toMediaCollection('image');
+
         return $this->successResponseWithAdditional(
-            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully created cinema'
         );
     }
@@ -48,7 +51,7 @@ class CinemaController extends Controller
     public function show(Cinema $cinema)
     {
         return $this->successResponse(
-            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully find cinema'
         );
     }
@@ -60,11 +63,14 @@ class CinemaController extends Controller
     {
         $cinema->update($request->validated());
 
+        if ($request->image) {
+            $cinema->clearMediaCollection('image');
+            $cinema->addMediaFromRequest('image')->toMediaCollection('image');
+        }
         return $this->successResponse(
-            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully updated cinema'
         );
-
     }
 
     /**
@@ -85,7 +91,7 @@ class CinemaController extends Controller
         ]);
 
         return $this->successResponse(
-            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully created comment'
         );
     }
@@ -101,7 +107,7 @@ class CinemaController extends Controller
         ]);
 
         return $this->successResponse(
-            CinemaResource::make($cinema->load(['comments','scores','daily_screenings'])),
+            CinemaResource::make($cinema->load(['comments','scores','daily_screenings','city'])),
             'Successfully Giving score'
         );
     }

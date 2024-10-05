@@ -22,6 +22,7 @@ class StoreRequest extends FormRequest
             'description' => ['required','string','max:255'],
             'phone' => ['nullable','string','digits:9','unique:cinemas,phone'],
             'entry_fee' => ['required', 'numeric','min:50'],
+            'image' => ['file','mimes:jpg,png,jpeg'],
         ];
     }
 }
