@@ -7,8 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\UserTicket;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -17,11 +15,15 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
         $token = $user->createToken('token')->plainTextToken;
+        if ( $request->profile)
+            $user->addMediaFromRequest('profile')
+                ->setFileName($user->user_name)
+                ->toMediaCollection('profile');
 
         return $this->successResponse([
                 'user' => UserResource::make($user),
                 'token' => $token
-            ]);
+        ]);
     }
 
     public function login(LoginRequest $request)

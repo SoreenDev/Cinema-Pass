@@ -15,12 +15,13 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string','min:3', 'max:255'],
-            'last_name' => ['string','min:3', 'max:255'],
-            'user_name' => ['string','min:3', 'max:255'],
+            'first_name' => ['string', 'min:3', 'max:255'],
+            'last_name' => ['string', 'min:3', 'max:255'],
+            'user_name' => ['string', 'min:3', 'max:255'],
             'email' => ['email', 'max:255'],
-            'city_id' => ['integer','exists:cities,id'],
-            'password' => ['string', 'min:8', 'confirmed'],
+            'city_id' => ['integer', 'exists:cities,id'],
+            'password' => ['string', 'min:8', 'max:255', 'confirmed'],
+            'profile' => ['file', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

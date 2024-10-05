@@ -42,6 +42,13 @@ class UserController extends Controller
     public function update(UpdateRequest $request, User $user)
     {
         $user->update($request->validated());
+
+        if ( $request->profile ) {
+            $user->clearMediaCollection('profile');
+            $user->addMediaFromRequest('profile')
+                ->setFileName($user->user_name)
+                ->toMediaCollection('profile');
+        }
         return $this->successResponse(
             UserResource::make($user),
             'Successful update user'
