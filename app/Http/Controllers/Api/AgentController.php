@@ -7,10 +7,19 @@ use App\Http\Requests\Agent\StoreRequest;
 use App\Http\Requests\Agent\UpdateRequest;
 use App\Http\Resources\AgentResource;
 use App\Models\Agent;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class AgentController extends Controller
+class AgentController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except:['index', 'show']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -31,6 +40,7 @@ class AgentController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create', Agent::class);
         $agent = Agent::create($request->validated());
         return $this->successResponse(
             AgentResource::make($agent->load(['performances'])),
@@ -54,6 +64,7 @@ class AgentController extends Controller
      */
     public function update(UpdateRequest $request, Agent $agent)
     {
+        Gate::authorize('update', $agent);
         $agent->update($request->validated());
         return $this->successResponse(
             AgentResource::make($agent->load(['performances'])),
@@ -66,6 +77,7 @@ class AgentController extends Controller
      */
     public function destroy(Agent $agent)
     {
+        Gate::authorize('delete', $agent);
         $agent->delete();
         return $this->successResponse(message: 'Successfully deleted agent');
     }

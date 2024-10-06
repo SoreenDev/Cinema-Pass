@@ -11,17 +11,26 @@ use App\Http\Controllers\Api\PerformanceController;
 use App\Http\Controllers\Api\ScoreController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UserTicketController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::controller(CityController::class)->prefix('cities')->group(function () {
-    Route::get('/','index');
-    Route::post('/','store')->middleware('auth:sanctum');
-    Route::get('/{city}','show');
-    Route::put('/{city}','update')->middleware('auth:sanctum');
-    Route::delete('/{city}','destroy')->middleware('auth:sanctum');
+
+Route::apiResource('cities', CityController::class);
+
+Route::apiResource('agents', AgentController::class);
+
+Route::apiResource('daily_screenings', DailyScreeningController::class);
+
+Route::apiResource('scores', ScoreController::class)->except(['update','store'])->middleware('auth:sanctum');
+
+Route::apiResource('users', UserController::class)->middleware('auth:sanctum')->except('store');
+
+Route::controller(CommentController::class)->prefix('comments')->group(function () {
+    Route::get('/','index')->middleware('auth:sanctum');
+    Route::get('/{comment}','show')->middleware('auth:sanctum');
+    Route::post('/{comment}/giving_score','givingScore')->middleware('auth:sanctum');
+    Route::delete('/{comment}','destroy')->middleware('auth:sanctum');
 });
 
 Route::controller(CinemaController::class)->prefix('cinemas')->group(function () {
@@ -44,48 +53,12 @@ Route::controller(PerformanceController::class)->prefix('performances')->group(f
     Route::delete('/{performance}','destroy')->middleware('auth:sanctum');
 });
 
-Route::controller(DailyScreeningController::class)->prefix('daily_screenings')->group(function () {
-    Route::get('/','index');
-    Route::post('/','store')->middleware('auth:sanctum');
-    Route::get('/{daily_screening}','show');
-    Route::put('/{daily_screening}','update')->middleware('auth:sanctum');
-    Route::delete('/{daily_screening}','destroy')->middleware('auth:sanctum');
-});
-
-Route::controller(AgentController::class)->prefix('agents')->group(function () {
-    Route::get('/','index');
-    Route::post('/','store')->middleware('auth:sanctum');
-    Route::get('/{agent}','show');
-    Route::put('/{agent}','update')->middleware('auth:sanctum');
-    Route::delete('/{agent}','destroy')->middleware('auth:sanctum');
-});
-
 Route::controller(CategoryController::class)->prefix('categories')->group(function () {
     Route::get('/','index');
     Route::post('/','store')->middleware('auth:sanctum');
     Route::get('/{category}','show');
     Route::put('/{category}','update')->middleware('auth:sanctum');
     Route::delete('/{category}','destroy')->middleware('auth:sanctum');
-});
-
-Route::controller(CommentController::class)->prefix('comments')->group(function () {
-    Route::get('/','index');
-    Route::get('/{comment}','show');
-    Route::post('/{comment}/giving_score','givingScore')->middleware('auth:sanctum');
-    Route::delete('/{comment}','destroy')->middleware('auth:sanctum');
-});
-
-Route::controller(UserController::class)->middleware('auth:sanctum')->prefix('users')->group(function () {
-    Route::get('/','index');
-    Route::get('/{user}','show');
-    Route::put('/{user}','update');
-    Route::delete('/{user}','destroy');
-});
-
-Route::controller(ScoreController::class)->prefix('scores')->group(function () {
-    Route::get('/','index')->middleware('auth:sanctum');
-    Route::get('/{score}','show');
-    Route::delete('/{score}','destroy')->middleware('auth:sanctum');
 });
 
 Route::controller(UserTicketController::class)->middleware('auth:sanctum')->prefix('my_tickets')->group(function () {

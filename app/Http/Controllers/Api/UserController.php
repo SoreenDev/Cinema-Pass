@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -16,6 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny',User::class);
         $users = QueryBuilder::for(User::class)
             ->get();
 
@@ -30,6 +31,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        Gate::authorize('view',[User::class ,$user]);
         return $this->successResponse(
             UserResource::make($user),
             'Successful find user'
@@ -41,6 +43,7 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, User $user)
     {
+        Gate::authorize('update',[User::class ,$user]);
         $user->update($request->validated());
 
         if ( $request->profile ) {
@@ -60,6 +63,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Gate::authorize('delete',[User::class ,$user]);
         $user->delete();
         return $this->successResponse(message: 'Successful delete user');
     }

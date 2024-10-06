@@ -7,6 +7,7 @@ use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CategoryController extends Controller
@@ -30,6 +31,7 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create',Category::class);
         $category = Category::create($request->validated());
 
         return $this->successResponse(
@@ -54,6 +56,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
+        Gate::authorize('update',Category::class);
         $category->update($request->validated());
         return $this->successResponse(
             CategoryResource::make($category->load('performances')),
@@ -66,6 +69,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        Gate::authorize('delete',Category::class);
         $category->delete();
         return $this->successResponse(message: 'Successfully deleted Category');
     }

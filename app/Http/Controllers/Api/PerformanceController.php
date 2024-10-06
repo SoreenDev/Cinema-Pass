@@ -10,6 +10,7 @@ use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\PerformanceResource;
 use App\Models\Performance;
 use App\Models\UserTicket;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PerformanceController extends Controller
@@ -34,6 +35,7 @@ class PerformanceController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create', Performance::class);
         $performance = Performance::create($request->validated());
 
         foreach ($request->agents as $agent) {
@@ -70,6 +72,7 @@ class PerformanceController extends Controller
      */
     public function update(UpdateRequest $request, Performance $performance)
     {
+        Gate::authorize('update', Performance::class);
         $performance->update($request->validated());
         if ($request->filled('agents')) {
             foreach ($request->agents as $agent) {
@@ -96,6 +99,7 @@ class PerformanceController extends Controller
      */
     public function destroy(Performance $performance)
     {
+        Gate::authorize('delete', Performance::class);
         $performance->delete();
         return $this->successResponse(message: 'Successfully deleted performance');
     }

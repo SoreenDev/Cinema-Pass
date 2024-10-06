@@ -10,6 +10,7 @@ use App\Http\Resources\UserTicketResource;
 use App\Models\DailyScreenings;
 use App\Models\UserTicket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserTicketController extends Controller
@@ -19,6 +20,7 @@ class UserTicketController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny',UserTicket::class);
         $userTickets = QueryBuilder::for(UserTicket::class)
             ->allowedIncludes(['user','daily_screening','performance'])
             ->get();
@@ -54,6 +56,7 @@ class UserTicketController extends Controller
      */
     public function show(UserTicket $userTicket)
     {
+        Gate::authorize('view',[UserTicket::class,$userTicket]);
         return $this->successResponse(
             UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
             'Successfully find'
@@ -65,6 +68,7 @@ class UserTicketController extends Controller
      */
     public function update(UpdateRequest $request, UserTicket $userTicket)
     {
+        Gate::authorize('update',[UserTicket::class,$userTicket]);
         $dailyScreening = DailyScreenings::find($request->daily_screenings_id);
         if ($dailyScreening > now())
             $this->errorResponse(message: 'The desired ticket has expired !');
@@ -86,11 +90,14 @@ class UserTicketController extends Controller
      */
     public function destroy(UserTicket $userTicket)
     {
+        Gate::authorize('delete',[UserTicket::class,$userTicket]);
         $userTicket->delete();
         return $this->successResponse(message: 'Successfully deleted ticket.');
     }
+
     public function ticketPaid(UserTicket $userTicket)
     {
+        Gate::authorize('paid',[UserTicket::class,$userTicket]);
         $userTicket->update([
             'status_payment' => StatusPaymentEnum::Paid->value
         ]);

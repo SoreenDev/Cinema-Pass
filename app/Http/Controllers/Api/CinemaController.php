@@ -10,6 +10,7 @@ use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\CinemaResource;
 use App\Models\Cinema;
 use App\Models\UserTicket;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CinemaController extends Controller
@@ -34,6 +35,7 @@ class CinemaController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create', Cinema::class);
         $cinema = Cinema::create($request->validated());
 
         if ($request->image)
@@ -63,6 +65,7 @@ class CinemaController extends Controller
      */
     public function update(UpdateReaquest $request, Cinema $cinema)
     {
+        Gate::authorize('update', Cinema::class);
         $cinema->update($request->validated());
 
         if ($request->image) {
@@ -81,6 +84,7 @@ class CinemaController extends Controller
      */
     public function destroy(Cinema $cinema)
     {
+        Gate::authorize('delete', Cinema::class);
         $cinema->delete();
 
         return $this->successResponse(message:'Successfully deleted cinema');

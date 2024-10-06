@@ -7,10 +7,21 @@ use App\Http\Requests\City\StoreRequest;
 use App\Http\Requests\City\UpdateRequest;
 use App\Http\Resources\CityResource;
 use App\Models\City;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class CityController extends Controller
+class CityController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            new Middleware("auth:sanctum", except: ["index", "show"]),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,6 +42,8 @@ class CityController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create', City::class);
+
         $city = City::create($request->validated());
         return $this->successResponse(
             CityResource::make($city),
@@ -54,6 +67,7 @@ class CityController extends Controller
      */
     public function update(UpdateRequest $request, City $city)
     {
+        Gate::authorize('update', City::class);
         $city->update($request->validated());
 
         return $this->successResponse(
@@ -67,6 +81,7 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
+        Gate::authorize('delete', City::class);
         $city->delete();
         return $this->successResponse([], 'Successfully Deleted City');
     }

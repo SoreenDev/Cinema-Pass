@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CommentController extends Controller
@@ -14,6 +15,7 @@ class CommentController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Comment::class);
         $comments = QueryBuilder::for(Comment::class)
             ->allowedIncludes('commentable','user','scores')
             ->get();
@@ -39,11 +41,12 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        Gate::authorize('delete', Comment::class);
         $comment->delete();
         return $this->successResponse(message: "Successfully delete comment");
     }
 
-    public function givingScore(Comment $comment,)
+    public function givingScore(Comment $comment)
     {
         $comment->scores()->create([
             'user_id' => auth()->id() ?? 1,

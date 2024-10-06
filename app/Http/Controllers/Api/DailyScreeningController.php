@@ -9,10 +9,20 @@ use App\Http\Resources\DailyScreeningResource;
 use App\Models\Cinema;
 use App\Models\DailyScreenings;
 use App\Models\Performance;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class DailyScreeningController extends Controller
+class DailyScreeningController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+          new Middleware('auth:sanctum', except: ['index','show'])
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,6 +44,7 @@ class DailyScreeningController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create',DailyScreenings::class);
         $start_time = $request->date .' 0'. $request->hour.':00:00';
         if ($request->date < now()->day(1))
             return $this->errorResponse('date must be after today');
@@ -77,6 +88,7 @@ class DailyScreeningController extends Controller
      */
     public function update(UpdateRequest $request, DailyScreenings $daily_screening)
     {
+        Gate::authorize('update',DailyScreenings::class);
         if (isset($request->date) && isset($request->hour)) {
             $start_time = $request->date . ' 0' . $request->hour . ':00:00';
 
@@ -106,8 +118,6 @@ class DailyScreeningController extends Controller
             DailyScreeningResource::make($daily_screening->load(['cinema', 'performance','city'])),
             'Successfully Update Daily Screening'
         );
-
-
     }
 
     /**
@@ -115,6 +125,7 @@ class DailyScreeningController extends Controller
      */
     public function destroy(DailyScreenings $daily_screening)
     {
+        Gate::authorize('delete',DailyScreenings::class);
         $daily_screening->delete();
         return $this->successResponse(  message: 'Successfully Delete Daily Screening');
     }
