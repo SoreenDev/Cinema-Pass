@@ -43,18 +43,29 @@ class CommentController extends Controller
     {
         Gate::authorize('delete', Comment::class);
         $comment->delete();
-        return $this->successResponse(message: "Successfully delete comment");
+        return $this->successResponse(message: 'Successfully delete comment');
     }
 
     public function givingScore(Comment $comment)
     {
-        $comment->scores()->create([
-            'user_id' => auth()->id() ?? 1,
-        ]);
+        $UserLastScore = $comment->scores()->where('user_id', auth()->id())->first();
+        if (! is_null($UserLastScore)) {
+
+            $UserLastScore->delete();
+            $message = "Deleted comment score";
+
+        }else{
+
+            $comment->scores()->create([
+                'user_id' => auth()->id(),
+            ]);
+            $message = "add comment score";
+
+        }
 
         return $this->successResponse(
             CommentResource::make($comment->load(['commentable','user','scores'])),
-            'Successfully Giving score'
+            message: $message
         );
     }
 }

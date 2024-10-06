@@ -9,6 +9,7 @@ use App\Http\Requests\Performance\UpdateRequest;
 use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\PerformanceResource;
 use App\Models\Performance;
+use App\Models\Score;
 use App\Models\UserTicket;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -119,6 +120,10 @@ class PerformanceController extends Controller
     {
         if (! UserTicket::where('user_id', auth()->id())->where('performance_id', $performance->id)->exists())
             $this->errorResponse('You do not have the necessary conditions to register the score!');
+
+        $UserLastScore = $performance->scores()->where('user_id', auth()->user()->id)->firstOrFail();
+        if($UserLastScore)
+            $UserLastScore->delete();
 
         $performance->scores()->create([
             'point' => $request->point,

@@ -9,6 +9,7 @@ use App\Http\Requests\Cinema\UpdateReaquest;
 use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\CinemaResource;
 use App\Models\Cinema;
+use App\Models\Score;
 use App\Models\UserTicket;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -107,6 +108,10 @@ class CinemaController extends Controller
     {
         if (! UserTicket::where('user_id', auth()->id())->where('cinema_id', $cinema->id)->exists())
             $this->errorResponse('You do not have the necessary conditions to register the score!');
+
+        $UserLastScore = $cinema->scores()->where('user_id', auth()->user()->id)->firstOrFail();
+        if($UserLastScore)
+            $UserLastScore->delete();
 
         $cinema->scores()->create([
             'point' => $request->point,
