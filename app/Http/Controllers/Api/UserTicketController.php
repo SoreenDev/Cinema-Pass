@@ -10,23 +10,32 @@ use App\Http\Resources\UserTicketResource;
 use App\Models\DailyScreenings;
 use App\Models\UserTicket;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class UserTicketController extends Controller
+class UserTicketController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum')
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         Gate::authorize('viewAny',UserTicket::class);
-        $userTickets = QueryBuilder::for(UserTicket::class)
+        $Tickets = QueryBuilder::for(UserTicket::class)
             ->allowedIncludes(['user','daily_screening','performance'])
             ->get();
 
         return $this->successResponseWithAdditional(
-            USerTicketResource::collection($userTickets),
+            USerTicketResource::collection($Tickets),
             'All Tickets'
         );
     }
@@ -39,14 +48,14 @@ class UserTicketController extends Controller
         $dailyScreening = DailyScreenings::find($request->daily_screenings_id);
         if ($dailyScreening > now())
             $this->errorResponse(message: 'The desired ticket has expired !');
-        $userTicket = UserTicket::create([
+        $ticket = UserTicket::create([
             'daily_screenings_id' => $dailyScreening->id,
             'user_id' => auth()->id()??1,
             'price' => $dailyScreening->final_ticket_cost,
             'status_payment' => StatusPaymentEnum::Waiting->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
+            UserTicketResource::make($ticket->load(['user','daily_screening','performance'])),
             'Created Ticket'
         );
     }
@@ -54,11 +63,11 @@ class UserTicketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserTicket $userTicket)
+    public function show(UserTicket $ticket)
     {
-        Gate::authorize('view',[UserTicket::class,$userTicket]);
+        Gate::authorize('view',[UserTicket::class,$ticket]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
+            UserTicketResource::make($ticket->load(['user','daily_screening','performance'])),
             'Successfully find'
         );
     }
@@ -66,13 +75,13 @@ class UserTicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, UserTicket $userTicket)
+    public function update(UpdateRequest $request, UserTicket $ticket)
     {
-        Gate::authorize('update',[UserTicket::class,$userTicket]);
+        Gate::authorize('update',[UserTicket::class,$ticket]);
         $dailyScreening = DailyScreenings::find($request->daily_screenings_id);
         if ($dailyScreening > now())
             $this->errorResponse(message: 'The desired ticket has expired !');
-        $userTicket->update([
+        $ticket->update([
             'performance_id'=> $dailyScreening->performance_id,
             'daily_screenings_id' => $dailyScreening->id,
             'user_id' => auth()->id()??1,
@@ -80,7 +89,7 @@ class UserTicketController extends Controller
             'status_payment' => StatusPaymentEnum::Waiting->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
+            UserTicketResource::make($ticket->load(['user','daily_screening','performance'])),
             'Created Ticket'
         );
     }
@@ -88,21 +97,21 @@ class UserTicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserTicket $userTicket)
+    public function destroy(UserTicket $ticket)
     {
-        Gate::authorize('delete',[UserTicket::class,$userTicket]);
-        $userTicket->delete();
+        Gate::authorize('delete',[UserTicket::class,$ticket]);
+        $ticket->delete();
         return $this->successResponse(message: 'Successfully deleted ticket.');
     }
 
-    public function ticketPaid(UserTicket $userTicket)
+    public function ticketPaid(UserTicket $ticket)
     {
-        Gate::authorize('paid',[UserTicket::class,$userTicket]);
-        $userTicket->update([
+        Gate::authorize('paid',[UserTicket::class,$ticket]);
+        $ticket->update([
             'status_payment' => StatusPaymentEnum::Paid->value
         ]);
         return $this->successResponse(
-            UserTicketResource::make($userTicket->load(['user','daily_screening','performance'])),
+            UserTicketResource::make($ticket->load(['user','daily_screening','performance'])),
             'Successfully paid ticket'
         );
     }

@@ -9,13 +9,21 @@ use App\Http\Requests\Cinema\UpdateReaquest;
 use App\Http\Requests\Score\StoreRequest as ScoreStoreRequest;
 use App\Http\Resources\CinemaResource;
 use App\Models\Cinema;
-use App\Models\Score;
 use App\Models\UserTicket;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class CinemaController extends Controller
+class CinemaController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum',except: ['index','show']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

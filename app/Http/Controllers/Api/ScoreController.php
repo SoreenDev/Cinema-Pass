@@ -5,11 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ScoreResource;
 use App\Models\Score;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class ScoreController extends Controller
+class ScoreController extends Controller implements HasMiddleware
 {
+
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum'),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +35,6 @@ class ScoreController extends Controller
             'All Scores'
         );
     }
-
 
     /**
      * Display the specified resource.
@@ -49,6 +58,5 @@ class ScoreController extends Controller
 
         return $this->successResponse(message: 'Successfully deleted score');
     }
-
 
 }
