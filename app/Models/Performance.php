@@ -27,6 +27,7 @@ class Performance extends Model implements HasMedia
     {
         return $this->hasMany(PerformanceAgent::class);
     }
+
     public function dailyScreenings(): HasMany
     {
         return $this->hasMany(DailyScreenings::class);

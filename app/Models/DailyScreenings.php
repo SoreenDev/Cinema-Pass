@@ -14,7 +14,7 @@ class DailyScreenings extends Model
         return $this->belongsTo(City::class);
     }
 
-    public function Cinema() : BelongsTo
+    public function cinema() : BelongsTo
     {
         return $this->belongsTo(Cinema::class);
     }

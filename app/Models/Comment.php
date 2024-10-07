@@ -13,7 +13,12 @@ class Comment extends Model
 {
     use HasFactory, HasScore;
 
-    protected $fillable = ['body','user_id'];
+    protected $fillable = ['body', 'user_id'];
+
+    public function commentable() :MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function scores() :MorphMany
     {
@@ -23,9 +28,5 @@ class Comment extends Model
     public function user() :BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-    public function commentable() :MorphTo
-    {
-        return $this->morphTo();
     }
 }

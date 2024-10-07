@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserTicket extends Model
 {
-    protected $fillable = ['user_id', 'daily_screenings_id', 'status_payment','price'] ;
+    protected $fillable = ['user_id', 'daily_screenings_id', 'status_payment', 'price'] ;
 
     public function user() : BelongsTo
     {

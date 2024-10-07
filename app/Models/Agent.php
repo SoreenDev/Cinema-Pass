@@ -11,7 +11,7 @@ class Agent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'long_description', 'activity'] ;
+    protected $fillable = ['name', 'description', 'long_description', 'activity'];
 
     public function performanceAgent(): HasMany
     {
