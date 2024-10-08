@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Trait\HasComment;
-use App\Trait\HasScore;
+use App\Trait\HasComments;
+use App\Trait\HasScores;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Performance extends Model implements HasMedia
 {
-    use HasFactory, HasScore, HasComment, InteractsWithMedia;
+    use HasFactory, HasScores, HasComments, InteractsWithMedia;
 
     protected $fillable = ['name', 'duration', 'age_group', 'description', 'price', 'production_data','category_id'];
 
