@@ -5,7 +5,7 @@ namespace App\Trait;
 use App\Models\Score;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-trait HasScore
+trait HasScores
 {
     public function scores(): MorphMany
     {
